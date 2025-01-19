@@ -1,7 +1,13 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import AddNewTask from "@/components/AddNewTask.vue";
 import TaskItem from "@/components/TaskItem.vue";
+import { useFocus } from "@vueuse/core";
+import { vOnClickOutside } from "@vueuse/components";
+import { useStore } from "@/stores";
+
+const store = useStore();
+const { updateListTitle } = store;
 
 const props = defineProps({
   id: String,
@@ -11,6 +17,12 @@ const props = defineProps({
 
 const title = ref(props.title);
 const isTitleEditing = ref(false);
+const target = ref();
+useFocus(target, { initialValue: true });
+
+watch(isTitleEditing, (v) => {
+  updateListTitle(props.id, title.value);
+});
 </script>
 
 <template>
@@ -27,8 +39,10 @@ const isTitleEditing = ref(false);
     </div>
     <textarea
         v-else
+        ref="target"
         v-model="title"
         @keydown.enter="isTitleEditing = false"
+        v-on-click-outside="() => (isTitleEditing = false)"
         class="border-none h-8 w-full p-1 resize-none overflow-hidden block"
     ></textarea>
 
