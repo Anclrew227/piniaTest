@@ -47,11 +47,11 @@ watch(isTitleEditing, (v) => {
     ></textarea>
 
     <!-- tasks -->
-    <TaskItem></TaskItem>
+    <TaskItem v-for="task in tasks" :key="task.id" v-bind="task" />
     <!-- tasks -->
 
     <!-- add new task -->
-    <AddNewTask></AddNewTask> 
+    <AddNewTask :id="props.id" />
     <!-- add new task -->
   </div>
 </template>
