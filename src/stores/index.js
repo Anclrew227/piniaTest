@@ -37,5 +37,9 @@ const defaultList = [
 ];
 
 export const useStore = defineStore("store", () => {
-  return {};
+  const lists = ref(defaultList);
+
+  return {
+    lists,
+  };
 });
